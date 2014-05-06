@@ -1,3 +1,4 @@
+
 /*===================================================
  fetchslider.js v0.1
  * https://github.com/Abhikos/fetchslider.git
@@ -22,29 +23,56 @@
 
 
 
-$(document).ready(function() {
-<!-- fetch the current url -->
-	var url=window.location
-<!-- on hash change -->
-	window.onhashchange=function(){
-		
-		 var hash1=window.location.hash;
-		 var hash2=hash1.replace("#",'');
-<!-- get request -->
-		 $.get( hash2, function( data ) {
-         $("#result").append(data);
-  <!-- flipbox slide -->
-  $("#flipbox" ).show().animate({"left":"-=640px"},500);
+
+window.onload=initAll;
+
+
+function initAll(){
+
+
+window.onhashchange=function(){
+var curHashUrl=window.location.hash;
+var rmHash=curHashUrl.replace("#",'');
+
+slideTime=800;
+flipboxPositionValue="-=640px";
+
+
+fetchSlider(rmHash,slideTime,flipboxPositionValue);
+
+
+};
+
+
+}
+
+
+
+function fetchSlider(fetchUrl,slideTime,flipboxPositionValue){
+
+$.get(fetchUrl,function(data){
+
+
+
+ <!-- flipbox slide -->
+$("#flipbox" ).show().animate({
+
+	left:flipboxPositionValue
+
+},slideTime);
+
       setTimeout(function(){
+
 	  $("#mainbox").remove();
 	  $("#flipbox").attr("id","mainbox");
-	   
-	  },500);
+	  $("#mainbox").append(data);
+	  $('body').append('<div id="flipbox"></div>');
+
+	  },slideTime);
  
-  
-  });
-  
-		 
-		 };
-	  
+
 });
+
+}
+
+
